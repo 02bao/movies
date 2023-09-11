@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/api/v1/movies")
+@CrossOrigin(origins = "http://localhost:3000")
 
 public class MovieController {
     @Autowired
@@ -23,8 +25,8 @@ public class MovieController {
         return new ResponseEntity<List<Movie>>(movieService.allMovies(), HttpStatus.OK);
     }
 
-    @GetMapping("/{ImdbId}")
-    public  ResponseEntity<Optional<Movie>> getSingLeMovie(@PathVariable String ImdbId) {
-        return  new ResponseEntity<Optional<Movie>>(movieService.singLeMovie(ImdbId), HttpStatus.OK);
+    @GetMapping("/{imdbId}")
+    public  ResponseEntity<Optional<Movie>> getSingLeMovie(@PathVariable String imdbId) {
+        return  new ResponseEntity<Optional<Movie>>(movieService.singLeMovie(imdbId), HttpStatus.OK);
     }
 }

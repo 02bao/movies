@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 //import java.util.function.BiFunction;
 
 //import static org.springframework.data.mongodb.core.query.UntypedExampleMatcher.matching;
@@ -16,12 +18,12 @@ public class ReviewService {
     private ReviewReponsitory ReviewReponsitory;
     @Autowired
     private MongoTemplate mongoTemplate;
-    public Review createReview(String reviewBody, String ImdbId ) {
-        Review review = new Review(reviewBody);
+    public Review createReview(String reviewBody, String imdbId ) {
+        Review review = ReviewReponsitory.insert(new Review(reviewBody, LocalDateTime.now(), LocalDateTime.now()));
 
         mongoTemplate.update(Movie.class)
-            .matching(Criteria.where("ImdbId").is(ImdbId))
-            .apply(new Update().push("ReviewIds").value(review))
+            .matching(Criteria.where("imdbId").is(imdbId))
+            .apply(new Update().push("reviews").value(review))
             .first();
 
         return review;
